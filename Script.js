@@ -3,11 +3,14 @@ const titleİnput=document.querySelector('#title');
 const descriptionİnput=document.querySelector('#description');
 const notesContainer=document.querySelector("#Notes");
 const deleteButton=document.querySelector("#deleteBtn");
+
+
 //Yeni not ekleme formunu temizleme
 function clearForm(){
     titleİnput.value='';
     descriptionİnput.value='';
     deleteButton.classList.add("hidden");
+    
 }
 
 //aşağı kısımdaki 3 method display notes içerisindeki event ile tetiklenip tıklanan not bilgilerini sol taraftaki bölüme getiriyor ayrıca var olan bir note seçildiğinde delete butonunu aktif ediyor
@@ -16,6 +19,8 @@ titleİnput.value=note.title;
 descriptionİnput.value=note.description;
 deleteButton.classList.remove("hidden");
 deleteButton.setAttribute('data-id',note.id);
+saveButton.setAttribute('data-id',note.id)
+
 };
 function populateForm(id){
    getNotByİd(id);  
@@ -94,9 +99,40 @@ function deleteNotById(id){
         ;
    
 }
+//Güncelleme işlemleri için
+
+function updateNote(id,title,description){
+    const body={
+        title: title,
+        description:description,
+        isVisible: true
+    };
+    fetch(`https://localhost:7284/api/Notes/${id}`,{
+    method:'PUT',
+    body:JSON.stringify(body),
+    headers:{
+        "content-type":"application/json"
+    }
+})
+.then(data=>data.json())
+.then(response=>{clearForm();
+getNotes();
+});
+};
+
+
+
 //Save butonuna event ekliyorum
 saveButton.addEventListener('click',function(){
-    addNote(titleİnput.value,descriptionİnput.value);
+    const id=saveButton.dataset.id;
+    if(id){
+        
+        updateNote(id,titleİnput.value,descriptionİnput.value)
+    }
+    else{
+        addNote(titleİnput.value,descriptionİnput.value);
+    }
+   
     });
 
  //Delete butonuna event ekliyorum   
@@ -104,3 +140,6 @@ deleteButton.addEventListener('click',function(){
 const id=deleteButton.dataset.id;
 deleteNotById(id);
 });
+
+
+
