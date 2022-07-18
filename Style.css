@@ -75,3 +75,18 @@ margin-bottom: 10px;
     overflow: auto;
     font-size: 14px;
 }
+.btn-delete{
+    margin-bottom: 10px;
+    padding: 10px;
+    outline: none;
+    background-color: rgb(159, 35, 7) !important;
+    color: antiquewhite;
+    border-radius: 4px;
+    border: antiquewhite;
+    border-width: 2px;
+    cursor: pointer;
+    float: right;
+}
+.hidden{
+    display: none;
+}
